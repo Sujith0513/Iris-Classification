@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Iris Species Prediction</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 1200px;
+      margin: auto;
+      padding: 20px;
+      background: #f0f0f0;
+    }
+    form {
+      background: white;
+      padding: 20px;
+      border-radius: 8px;
+      margin-bottom: 30px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    label {
+      display: block;
+      margin-top: 10px;
+    }
+    input[type="number"] {
+      width: 100%;
+      padding: 8px;
+      margin-top: 5px;
+      border-radius: 4px;
+      border: 1px solid #ccc;
+    }
+    input[type="submit"] {
+      margin-top: 15px;
+      padding: 10px 15px;
+      background-color: #007BFF;
+      border: none;
+      border-radius: 4px;
+      color: white;
+      font-size: 16px;
+      cursor: pointer;
+    }
+    .prediction {
+      margin-top: 20px;
+      padding: 15px;
+      background-color: #e2ffe2;
+      border: 1px solid #7bc67b;
+      border-radius: 5px;
+      font-weight: bold;
+    }
+    .species-img {
+      max-width: 250px;
+      margin-top: 15px;
+      border-radius: 5px;
+      box-shadow: 0 0 8px rgba(0,0,0,0.15);
+    }
+
+    .images {
+      margin-top: 40px;
+    }
+
+    .images h2 {
+      margin-bottom: 20px;
+    }
+
+    .image-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+      margin-bottom: 30px;
+    }
+
+    .image-grid-4 {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 20px;
+    }
+
+    .images img {
+      width: 100%;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      box-shadow: 0 0 8px rgba(0,0,0,0.1);
+    }
+  </style>
+</head>
+<body>
+  <h1>Iris Species Prediction</h1>
+
+  <form action="/predict" method="post">
+    <label for="sepal_length">Sepal Length:</label>
+    <input type="number" step="any" id="sepal_length" name="sepal_length" required />
+
+    <label for="sepal_width">Sepal Width:</label>
+    <input type="number" step="any" id="sepal_width" name="sepal_width" required />
+
+    <label for="petal_length">Petal Length:</label>
+    <input type="number" step="any" id="petal_length" name="petal_length" required />
+
+    <label for="petal_width">Petal Width:</label>
+    <input type="number" step="any" id="petal_width" name="petal_width" required />
+
+    <input type="submit" value="Predict Species" />
+  </form>
+
+  {% if prediction_text %}
+  <div class="prediction">{{ prediction_text }}</div>
+  {% endif %}
+
+  {% if image_file %}
+  <img class="species-img" src="{{ url_for('static', filename=image_file) }}" alt="Predicted Species Image" />
+  {% endif %}
+  <h3>Model Accuracy: {{ (accuracy * 100) | round(2) }}%</h3>
+
+  <div class="images">
+    <h2>Analysis Plots</h2>
+
+    <!-- Row 1: 3 Plots from second image -->
+    <div class="image-grid">
+      <img src="{{ url_for('static', filename='pairplot.png') }}" alt="Pairplot" />
+      <img src="{{ url_for('static', filename='correlation_heatmap.png') }}" alt="Heatmap" />
+      <img src="{{ url_for('static', filename='confusion_matrix.png') }}" alt="Confusion Matrix" />
+    </div>
+
+    <!-- Row 2: 4 Plots from first image -->
+    <div class="image-grid-4">
+      <img src="{{ url_for('static', filename='boxplot_sepal_length.png') }}" alt="Sepal Width" />
+      <img src="{{ url_for('static', filename='boxplot_sepal_width.png') }}" alt="Petal Length" />
+      <img src="{{ url_for('static', filename='boxplot_petal_length.png') }}" alt="Petal Width" />
+      <img src="{{ url_for('static', filename='boxplot_petal_width.png') }}" alt="Sepal Length" />
+    </div>
+  </div>
+</body>
+</html>
+
